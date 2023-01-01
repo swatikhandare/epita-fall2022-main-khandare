@@ -1,0 +1,46 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    volumes:
+      - ./mongo:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 8081:8081
+    depends_on:
+      - mongo
+    restart: on-failure
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root
+      ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
+
+  api:
+    build:
+      context: . 
+      dockerfile: ./node/Dockerfile
+    ports:
+      - "4500:4500"
+    depends_on:
+      - mongo
+    volumes:
+      - ./server:/app
+    environment:
+      APP_PORT: 4500
+      MONGO_DB: mongodb://root:root@mongo:27017/epita?authSource=admin
+  
+  front-test:
+    build:
+      context: .
+      dockerfile: ./node/DockerfileFrontTest
+    ports:
+    - "3000:3000"
+    depends_on:
+      - api
+    volumes:
+      - ./front-test:/app
