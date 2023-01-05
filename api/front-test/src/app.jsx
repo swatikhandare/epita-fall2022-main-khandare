@@ -8,7 +8,7 @@ export const App =({name, age}) =>{
 
 export const Animals =() =>{
 
-    let animals = {'Dog''Cat''Fish'};
+   let animals = "Dog";
     return<ul>
         {animals.map(animals => <li>{animal}</li>)}
     </ul>
