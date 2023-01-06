@@ -7,6 +7,8 @@ import Contact from './pages/Contact';
 import Register from './pages/Register';
 import Login from './pages/Login';
 
+import Logout  from './pages/Logout';
+
 import Default from './layout/Default';
 
 const Router = () => {
@@ -27,6 +29,9 @@ const Router = () => {
             </Default>} />
             <Route path="/login" element={<Default>
               <Login />
+            </Default>} />
+            <Route path="/logout" element={<Default>
+              <Logout />
             </Default>} />
         </Routes>
     </BrowserRouter>

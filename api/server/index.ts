@@ -23,9 +23,9 @@ import todoRouter from './routes/todo';
 
 app.use(session({
     secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true }
+    resave: true,
+    saveUninitialized: false,
+    cookie: { secure: false }
   }))
 
 mongoose.connect(`${process.env.MONGO_DB}`, {
@@ -39,7 +39,7 @@ mongoose.connect(`${process.env.MONGO_DB}`, {
 });
 
 app.get('/', (request: Request, response: Response): void => {
-    response.status(200).send('Hello Loïc !');
+    response.status(200).send('Hello Swati !');
 });
 
 app.use('/auth', authRouter);

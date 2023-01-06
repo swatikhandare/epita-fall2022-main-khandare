@@ -2,7 +2,6 @@ import express, {Request, Response} from 'express';
 import bcrypt from 'bcrypt';
 
 import useModel from '../models/userModel';
-import { User } from '../types/User';
 import {isAuth} from '../middlewares/auth';
 
 let Router = express.Router();
@@ -55,6 +54,7 @@ Router.post('/login', async (request: any, response: Response): Promise<Response
 
             if (user && bcrypt.compareSync(password, user.password)) {
                 request.session.use = user;
+                
                 return response.status(200).json(user);
             }
 
