@@ -1,7 +1,10 @@
 version: '3'
+
 services:
   mongo:
     image: mongo
+    ports:
+      - 27017:27017
     volumes:
       - ./mongo:/data/db
     environment:
@@ -19,10 +22,10 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: root
       ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
-
+  
   api:
     build:
-      context: . 
+      context: .
       dockerfile: ./node/Dockerfile
     ports:
       - "4500:4500"
@@ -33,14 +36,17 @@ services:
     environment:
       APP_PORT: 4500
       MONGO_DB: mongodb://root:root@mongo:27017/epita?authSource=admin
-  
+
   front-test:
     build:
-      context: .
-      dockerfile: ./node/DockerfileFrontTest
+      context: ./front-test
+      dockerfile: ../node/DockerfileFrontTest
     ports:
-    - "3000:3000"
+      - "3000:3000"
     depends_on:
       - api
     volumes:
       - ./front-test:/app
+      - /app/node_modules
+    environment:
+      VITE_API_URL: http://localhost:4500

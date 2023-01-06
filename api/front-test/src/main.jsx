@@ -1,14 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { Animals } from './app'
+import { Provider } from 'react-redux'
+
 import Router from './router'
+import { store } from './store'
+
 import './styles/index.scss'
-
-
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Animals/>
-    <Router/>
+    <Provider store={store}>
+      <Router />
+    </Provider>
   </React.StrictMode>
 )

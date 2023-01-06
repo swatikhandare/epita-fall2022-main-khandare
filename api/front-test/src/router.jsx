@@ -1,19 +1,36 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import {App, Animals} from "./app";
-import Default from "./layout/Default";
+import React from 'react';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
+
+import Home from './pages/Home';
+import Animals from './pages/Animals';
+import Contact from './pages/Contact';
+import Register from './pages/Register';
+import Login from './pages/Login';
+
+import Default from './layout/Default';
 
 const Router = () => {
-    return (
-        
-        <BrowserRouter>
+  return (
+    <BrowserRouter>
         <Routes>
-            <Route path='/' element={<Default><App name = "Tim" age={70}/></Default>} />
-            <Route path='/animals' element={<Default><Animals/></Default>} />
+            <Route path="/" element={ <Default>
+              <Home />
+            </Default> } />
+            <Route path="/animals" element={<Default>
+              <Animals />
+            </Default>} />
+            <Route path="/contact" element={<Default>
+              <Contact />
+            </Default>} />
+            <Route path="/register" element={<Default>
+              <Register />
+            </Default>} />
+            <Route path="/login" element={<Default>
+              <Login />
+            </Default>} />
         </Routes>
-        </BrowserRouter>
-
-    )
-
+    </BrowserRouter>
+  )
 }
+
 export default Router;

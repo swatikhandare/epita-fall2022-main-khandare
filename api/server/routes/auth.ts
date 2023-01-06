@@ -1,7 +1,9 @@
 import express, {Request, Response} from 'express';
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcrypt';
+
 import useModel from '../models/userModel';
 import { User } from '../types/User';
+import {isAuth} from '../middlewares/auth';
 
 let Router = express.Router();
 
@@ -19,27 +21,27 @@ Router.post('/register', async (request: Request, response: Response): Promise<R
             return response.status(500).json({"msg": "Email or password confirmation are not valid !"});
         }
 
-        const user : User|void = await <User|void>useModel.create({
-            email,
-            "password": bcrypt.hashSync(password, 10)
-        }, (error) => {
-            if (error) return response.status(500).json({"msg": "User not create"})
+        try {
+            let user = await useModel.findOne({email})
 
-            return response.status(200).json(user)
-        });
+            if (user) return response.status(500).json({"msg": "User already exists !"});
 
+            user = await useModel.create({
+                email,
+                "password": bcrypt.hashSync(password, 10)
+            });
 
+            return response.status(200).json(user);
+        } catch (error) {
+            console.log(error)
+            return response.status(500).json({"msg": "Error while creating the user !"});
+        }
     } else {
         return response.status(500).json({"msg": "You have to send email, password and confirmations !"});
     }
-
-    
-    return response.status(200).json('Register page');
 });
 
-//Router.post('/login', async (request: Request, response: Response): Promise<Response> => {
-Router.post('/login', async (request: Request, response: Response): Promise<Response> => {
-
+Router.post('/login', async (request: any, response: Response): Promise<Response> => {
     console.log(request.body);
     const { email, password } = request.body;
 
@@ -49,9 +51,10 @@ Router.post('/login', async (request: Request, response: Response): Promise<Resp
     ) {
             let user = await useModel.findOne({email})
 
-            //if(!user)return response.status(500).json({"msg": "Email and password don't match !"});
+            // if (!user) return response.status(500).json({"msg": "Email and password don't match !"});
 
-            if (user?.password == password) {
+            if (user && bcrypt.compareSync(password, user.password)) {
+                request.session.use = user;
                 return response.status(200).json(user);
             }
 
@@ -60,6 +63,10 @@ Router.post('/login', async (request: Request, response: Response): Promise<Resp
     } else {
         return response.status(500).json({"msg": "You have to send email and password !"});
     }
+});
+
+Router.get('/me', isAuth, async (request: any, response: Response): Promise<Response> => {
+    return response.status(200).json(request.session.user);
 });
 
 export default Router;

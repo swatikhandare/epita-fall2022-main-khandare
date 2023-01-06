@@ -1,24 +1,25 @@
-require('dotenv').config()
-//const express = require('express');
-import express, { Request, Response } from 'express'
-import { exit } from 'process';
+require('dotenv').config();
 
-import authRouter from './routes/auth';
-
-import todoRouter from './routes/todo';
+import express, {Request, Response} from 'express';
 
 const morgan = require('morgan');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
+const cors = require('cors');
+let session = require('express-session');
 
-let session = require('express-session')
 const app = express();
 
-
 app.use(morgan('combined'));
-//helmet is for security
 app.use(helmet());
 app.use(express.json());
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    credentials: true,
+}));
+
+import authRouter from './routes/auth';
+import todoRouter from './routes/todo';
 
 app.use(session({
     secret: 'keyboard cat',
@@ -27,30 +28,22 @@ app.use(session({
     cookie: { secure: true }
   }))
 
-
 mongoose.connect(`${process.env.MONGO_DB}`, {
-          
-            useNewUrlParser: true
-       
-
-        }, (error:any) => {
-            if (error){
-                console.log('Error: ' + error)
-            }
-            else{
-            console.log("DB connect")
-            }
-        } );
-   
-
-
-
-app.get('/', (request: Request, response: Response) =>{
-    response.status(200).send('Hello Swati!');
+    useNewUrlParser: true
+}, (error: any) => {
+    if (error) {
+        console.log('Error:' + error);
+    } else {
+        console.log("DB connect");
+    }
 });
 
-app.use ('/auth', authRouter);
-app.use ('/todos', todoRouter);
+app.get('/', (request: Request, response: Response): void => {
+    response.status(200).send('Hello Loïc !');
+});
+
+app.use('/auth', authRouter);
+app.use('/todos', todoRouter);
 
 app.listen(process.env.APP_PORT, () => {
     console.log(`Server Running on http://localhost:${process.env.APP_PORT}`);
