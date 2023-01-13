@@ -1,25 +1,38 @@
 import React, { useEffect } from 'react';
-import {Link, useNavigate} from 'react-router-dom'
-import {useSelector} from 'react-redux'
+import {Link, useNavigate} from 'react-router-dom';
+import {useSelector, useDispatch} from 'react-redux';
+
 import { getMe } from '../services/auth';
 import {setAuth} from '../slices/authSlice';
 
-const Default = ({ children }) => {
+const Default = ({ children, privated=false }) => {
   let navigate = useNavigate()
-  const {isAuth} = useSelector((state) => state.auth)
-  console.log(isAuth)
-
-  useEffect(() =>{
+  let dispatch = useDispatch()
+  const {isAuth} = useSelector((state) => state.auth);
+  
+  useEffect(() => {
     const getData = async () => {
-      const res =await getMe();      
-      if (res.response.status=503){
-        navigate("/login");
+      let token = localStorage.getItem('token');
+      const res = await getMe(token);
+      console.log(res)
+
+      if (res.status && res.status !== 503) {
+        dispatch(setAuth({
+          user: res.data,
+          token: token
+        }))
       }
-      dispatch(setAuth(res.data))
+
+      console.log(privated, isAuth)
+
+      if (privated && !isAuth) {
+        navigate('/login')
+      }
     };
+
     getData();
   }, []);
-
+  
   return (
     <div id="default">
       <nav>
@@ -27,6 +40,7 @@ const Default = ({ children }) => {
         {isAuth && <>
           <Link to="/animals">Animals</Link>
           <Link to="/contact">Contact</Link>
+          <Link to="/todos">Todos</Link>
           <Link to="/logout">Logout</Link>
         </>}
         {!isAuth && <>

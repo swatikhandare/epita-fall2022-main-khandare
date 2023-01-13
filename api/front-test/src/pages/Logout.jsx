@@ -1,27 +1,27 @@
-import{useEffect} from 'react'
+import { useEffect } from 'react'
 import {useDispatch} from 'react-redux'
-import { Navigate, useNavigate } from 'react-router-dom';
-import { logout } from '../services/auth';
+import { useNavigate } from 'react-router-dom';
+
+import {logout} from '../services/auth';
 import {deleteAuth} from '../slices/authSlice';
 
-const Logout = () =>{
-    let nagivage = useNavigate()
-    let disptach = useDispatch()
+const Logout = () => {
+    let navigate = useNavigate()
+    let dispatch = useDispatch()
 
-    useEffect(()=>{
-        const getData = async () =>{
-            const res = await logout()
-        
-            if (res.staatus == 503){
-                return Navigate('/login');
-            }
-            disptach(deleteAuth())
+    useEffect(() => {
+        const getData = async () => {
+            localStorage.removeItem('token');
+            
+            dispatch(deleteAuth());
 
-            return Navigate('/login');
-        
-        };
-        getData();
-    },[]);
+            await logout();
+            
+            return navigate('/login');
+        }
+
+        getData()
+    }, []);
 }
 
 export default Logout

@@ -28,17 +28,12 @@ const Animals = () => {
 
 
 
-    const handleAnimalAdd = (event) => {
-
+    const onSubmitHandler = (event) => {
         event.preventDefault();
 
-        if (!newAnimal) return
-
         setAnimals([...animals, newAnimal]);
-
-        setNewAnimal('');
-
-    }
+        setNewAnimal("");
+    };
 
 
 
@@ -69,43 +64,27 @@ const Animals = () => {
 
 
         <ul className="animals-list">
-
             { animals
-
-                .filter((animal => animal.toLowerCase().startsWith(filter.toLowerCase())))
-
-                .map(animal => <li key={`list-${animal}`}>{animal}</li>)
-
+                .filter(animal => animal.includes(filter))
+                .map(animal => <li key={`list-${animal}`}>
+                    {animal}
+                </li> )
             }
-
         </ul>
 
 
-
-        <form onSubmit={handleAnimalAdd}>
-
+        <form onSubmit={onSubmitHandler}>
             <label>Add a animal</label>
-
-            <input
-
-                type="test"
-
-                name="animal"
-
+            <input 
+                type="test" 
+                name="animal" 
                 value={newAnimal}
-
                 placeholder='Name of you animal'
-
                 onChange={onChangeAnimalHandler}
-
             />
-
-                <input type="submit" value="Add" disabled={!newAnimal} />
-
+            <button type="submit">Save</button>
         </form>
-
     </>
-
 }
 
 export default Animals;

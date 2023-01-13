@@ -1,9 +1,9 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useDispatch} from 'react-redux'
 
 import {setAuth} from '../slices/authSlice'
-import {login} from '../services/auth';
+import {login, getMe} from '../services/auth';
 
 const Login = () => {
     let navigate = useNavigate();
@@ -31,15 +31,17 @@ const Login = () => {
 
         const res = await login(form);
 
+        setForm({
+            email: "",
+            password: ""
+        });
+        
         if (res.status === 200) {
-            dispatch(setAuth(res.data))
-            navigate('/');
+            localStorage.setItem('token', res.data.token);
+            dispatch(setAuth(res.data));
+            return navigate('/');
           } else {
             setMsg(res.response.data.msg);
-            setForm({
-              email: "",
-              password: ""
-            });
           }
     };
 

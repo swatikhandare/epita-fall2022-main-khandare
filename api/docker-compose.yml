@@ -40,13 +40,12 @@ services:
   front-test:
     build:
       context: ./front-test
-      dockerfile: ../node/DockerfileFrontTest
+      dockerfile: ./node/DockerfileFrontTest
     ports:
       - "3000:3000"
     depends_on:
       - api
     volumes:
       - ./front-test:/app
-      - /app/node_modules
     environment:
       VITE_API_URL: http://localhost:4500
