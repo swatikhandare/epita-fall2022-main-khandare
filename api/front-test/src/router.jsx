@@ -6,12 +6,10 @@ import Animals from './pages/Animals';
 import Contact from './pages/Contact';
 import Register from './pages/Register';
 import Login from './pages/Login';
-
-import Logout  from './pages/Logout';
+import Logout from './pages/Logout';
+import Todos from './pages/Todos';
 
 import Default from './layout/Default';
-
-import Todos from './pages/Todos'
 
 const Router = () => {
   return (

@@ -9,9 +9,6 @@ const Home = () => {
   
   const [name, setName] = useState('')
 
-  //let name = 'Swati'
-
-
   useEffect(() =>{
 
     console.log("userEffect")
@@ -27,13 +24,12 @@ const Home = () => {
 
   }, [user]);
   
-  return (
-    <div>
-      Home {name}
+  return (<>
+    <h1 className="title">
+      Hello {name}
+    </h1>
 
-      <Chucknorris />
-    </div>
-  )
+    <Chucknorris />
+  </>)
 }
-
 export default Home

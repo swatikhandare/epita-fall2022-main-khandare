@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import { useSelector } from 'react-redux';
 import { postTodos } from '../services/todos';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 
 
 const newTodos = () => {
@@ -9,7 +9,7 @@ const newTodos = () => {
 
         const labelRef= useRef()
         const descriptionRef= useRef()
-        let navigate =useNavigate()
+        //let navigate =useNavigate()
             useEffect(()=>{
                 labelRef.current.focus();
 

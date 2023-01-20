@@ -65,7 +65,7 @@ const Animals = () => {
 
         <ul className="animals-list">
             { animals
-                .filter(animal => animal.includes(filter))
+                .filter(animal => animal.toLowerCase().includes(filter.toLowerCase()))
                 .map(animal => <li key={`list-${animal}`}>
                     {animal}
                 </li> )

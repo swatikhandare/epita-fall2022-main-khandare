@@ -50,4 +50,4 @@ axios.interceptors.request.use(async(request) =>{
         }
     });
     
-export default axios
+export default axios;
