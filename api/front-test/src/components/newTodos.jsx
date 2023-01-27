@@ -3,38 +3,52 @@ import { useSelector } from 'react-redux';
 import { postTodos } from '../services/todos';
 //import { useNavigate } from 'react-router-dom';
 
+import {redirect} from 'react-router-dom';
+
 
 const newTodos = () => {
-        const {token}= useSelector((state)=> state.auth);
+    const {token} = useSelector((state) => state.auth);
+    const labelRef = useRef()
+    const descriptionRef = useRef()
 
-        const labelRef= useRef()
-        const descriptionRef= useRef()
-        //let navigate =useNavigate()
-            useEffect(()=>{
-                labelRef.current.focus();
+    useEffect(() => {
+        labelRef.current.focus();
+    }, [])
 
-            },[])
+    const onSubmitHandler = async (event) => {
+        event.preventDefault();
 
-        const onSubmitHandler = async(event)=>{
-            event.preventDefault();
-            console.log(labelRef.current.value)
-            const res = await postTodos(token,{
-                    label: labelRef.current.value,
-                    description:descriptionRef.current.value
-            });
-            console.log(res)
+        if (labelRef.current.value == "") {
+            alert('You should give almost a label !');
+            return false;
         }
-        return (
+        
+        await postTodos(token, {
+            label: labelRef.current.value,
+            description: descriptionRef.current.value
+        });
 
-                <form onSubmit={onSubmitHandler}>
-                <label>Label</label>
-                <input type='text' name='label' ref={labelRef} placeholder ='Enter a label'/>
-                <label>Description</label>
-                <input type='text' name='label' ref={descriptionRef} placeholder ='Enter a description'/>
-                <button type='submit'>Save</button>
-                </form>
-            
-        )
+        labelRef.current.value = "";
+        descriptionRef.current.value = "";
+
+        redirect('/todos');
+    }
+
+  return (
+    <form onSubmit={onSubmitHandler}>
+        <div>
+            <label>Label</label>
+            <input type="text" ref={labelRef} placeholder="Enter a label" />
+        </div>
+        <div>
+            <label>Description</label>
+            <input type="text" ref={descriptionRef} placeholder="Enter a description" />
+        </div>
+        <div>
+            <button type='submit'>Save</button>
+        </div>
+    </form>
+  )
 }
 
 export default newTodos

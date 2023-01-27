@@ -1,32 +1,17 @@
 import { useState } from "react";
 
-
-
 const Animals = () => {
-
     const [animals, setAnimals] = useState(['Dog', 'Lion', 'Bird', 'Fish']);
-
     const [filter, setFilter] = useState("");
-
     const [newAnimal, setNewAnimal] = useState("");
 
-
-
     const onChangeFilterHandler = (event) => {
-
         setFilter(event.target.value);
-
     };
-
-
 
     const onChangeAnimalHandler = (event) => {
-
         setNewAnimal(event.target.value);
-
     };
-
-
 
     const onSubmitHandler = (event) => {
         event.preventDefault();
@@ -35,33 +20,18 @@ const Animals = () => {
         setNewAnimal("");
     };
 
-
-
     return <>
-
         <h1 className="title">My animals</h1>
-
         
-
         <div>
-
-            <input
-
-                type="input"
-
-                name="filter"
-
-                value={filter}
-
+            <input 
+                type="test" 
+                name="filter" 
+                value={filter} 
                 placeholder='Filter'
-
                 onChange={onChangeFilterHandler}
-
             />
-
         </div>
-
-
 
         <ul className="animals-list">
             { animals
@@ -72,17 +42,20 @@ const Animals = () => {
             }
         </ul>
 
-
         <form onSubmit={onSubmitHandler}>
-            <label>Add a animal</label>
-            <input 
-                type="test" 
-                name="animal" 
-                value={newAnimal}
-                placeholder='Name of you animal'
-                onChange={onChangeAnimalHandler}
-            />
-            <button type="submit">Save</button>
+            <div>
+                <label>Add a animal</label>
+                <input 
+                    type="test" 
+                    name="animal" 
+                    value={newAnimal}
+                    placeholder='Name of you animal'
+                    onChange={onChangeAnimalHandler}
+                />
+            </div>
+            <div>
+                <button type="submit">Save</button>
+            </div>
         </form>
     </>
 }

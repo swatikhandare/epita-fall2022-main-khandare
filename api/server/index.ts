@@ -6,8 +6,8 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
 const cors = require('cors');
-//let session = require('express-session');
-const cookieParser  = require('cookie-parser');
+// let session = require('express-session');
+const cookieParser = require ('cookie-parser');
 
 const app = express();
 
@@ -15,10 +15,9 @@ app.use(morgan('combined'));
 app.use(helmet());
 app.use(express.json());
 app.use(cors({
-    origin: ["http://localhost:3000","http://127.0.0.1:3000"],
+    origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
     credentials: true,
 }));
-
 app.use(cookieParser())
 
 import authRouter from './routes/auth';
@@ -28,8 +27,10 @@ import todoRouter from './routes/todo';
     secret: 'keyboard cat',
     resave: true,
     saveUninitialized: false,
-    cookie: { secure: false }
-  }))*/
+    cookie: { 
+        secure: false // Put true if you are in HTTPS
+    }
+}))*/
 
 mongoose.connect(`${process.env.MONGO_DB}`, {
     useNewUrlParser: true
@@ -42,7 +43,7 @@ mongoose.connect(`${process.env.MONGO_DB}`, {
 });
 
 app.get('/', (request: Request, response: Response): void => {
-    response.status(200).send('Hello Swati !');
+    response.status(200).send('Hello Loïc !');
 });
 
 app.use('/auth', authRouter);
