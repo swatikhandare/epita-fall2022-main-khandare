@@ -1,0 +1,17 @@
+version: '3'
+services:
+  front:
+    container_name: front_pwa2
+    build:
+      context: ./front-react
+      dockerfile: ../Dockerfile-react.dev
+    volumes:
+      - ./front-react:/app
+      - /app/node_modules
+    ports:
+      - 3000:3000
+    networks:
+      - pwa2
+
+networks:
+  pwa2:
